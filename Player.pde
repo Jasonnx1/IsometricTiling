@@ -1,80 +1,75 @@
-public class Player extends GraphicObject
-{
+class Player {
   
   
-  final int SPEED = 2;
+  float speed = 5;
   
-  boolean keyUpPressed = false, 
-          keyDownPressed = false, 
-          keyRightPressed = false,
-          keyLeftPressed = false;
-          
-          
-  char keyUp = 'w', 
-       keyDown = 's', 
-       keyRight = 'd',
-       keyLeft = 'a';
-          
-          
-        
+  PVector dir;
+  PVector pos;
   
-  
-  
-  Player()
+  Player(float _x, float _y)
   {
-      loc = new PVector(width/2, height/2);
-      vel = new PVector();
-      acc = new PVector();  
+    pos = new PVector(_x, _y);
+    dir = new PVector(_x, _y);
   }
   
-  void update(float deltatime)
+  void set(float a, float b)
+  {
+    dir = new PVector(a,b);    
+  }
+  
+  void update()
+  {
+   
+      move();
+  
+      if (isoToCart(pos.x, pos.y).get(0) >= 400) {
+        set(pos.x, pos.y);
+      }
+      if (isoToCart(pos.x, pos.y).get(0) <= 0) {
+        set(pos.x, pos.y);
+      }
+      if (isoToCart(pos.x, pos.y).get(1) >= 400) {
+        set(pos.x, pos.y);
+      }
+      if (isoToCart(pos.x, pos.y).get(1) <= 0) {
+        set(pos.x, pos.y);
+      }
+    
+  }
+  
+  void move()
   {
     
-    if(keyUpPressed){ vel.y -= 1 * SPEED; }
-    if(keyDownPressed){ vel.y += 1 * SPEED; }
-    if(keyRightPressed){ vel.x += 1 * SPEED; }
-    if(keyLeftPressed){ vel.x -= 1 * SPEED; }
-    
-    
-    loc.add(vel);
-    vel.mult(0);
-    
+    if((this.pos.x != this.dir.x) || (this.pos.y != this.dir.y)) {
+      if (this.pos.x - this.dir.x <= 2 && this.pos.y - this.dir.y <= 2 && -2 <= this.pos.x - this.dir.x && -2 <= this.pos.y - this.dir.y) {
+        this.pos.x = this.dir.x;
+        this.pos.y = this.pos.y;
+      } else {
+        PVector movementVect = new PVector(
+         this.dir.x - this.pos.x,
+         this.dir.y - this.pos.y
+      );
+      
+      PVector vectorDir = new PVector(
+         movementVect.x / (sqrt(sq(movementVect.x) + sq(movementVect.y))),
+         movementVect.y / (sqrt(sq(movementVect.x) + sq(movementVect.y)))
+      );
 
+      this.pos.x = round(this.pos.x + vectorDir.x * this.speed);
+      this.pos.y = round(this.pos.y + vectorDir.y * this.speed);  
+      }      
+    }
+    
   }
   
   void display()
   {
     
-    fill(255);
-    ellipse(loc.x, loc.y, 20,20);
+    
+  fill(200, 200, 50);
+  ellipse(pos.x, pos.y, 20, 20);
     
   }
-  
-  
-  void keyPressed(char k)
-  {
-    
-    if(k == keyUp){ keyUpPressed = true; }
-    if(k == keyDown){ keyDownPressed = true; }
-    if(k == keyRight){ keyRightPressed = true; }
-    if(k == keyLeft){ keyLeftPressed = true; }
- 
-  }
-  
-  
-    void keyReleased(char k)
-  {
-    
-    if(k == keyUp){ keyUpPressed = false; }
-    if(k == keyDown){ keyDownPressed = false; }
-    if(k == keyRight){ keyRightPressed = false; }
-    if(k == keyLeft){ keyLeftPressed = false; }
- 
-  }
-  
-  
-  
-  
   
   
 }
