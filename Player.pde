@@ -22,13 +22,13 @@ class Player {
    
       move();
   
-      if (isoToCart(pos.x, pos.y).get(0) >= 400) {
+      if (isoToCart(pos.x, pos.y).get(0) >= 440) {
         set(pos.x, pos.y);
       }
       if (isoToCart(pos.x, pos.y).get(0) <= 0) {
         set(pos.x, pos.y);
       }
-      if (isoToCart(pos.x, pos.y).get(1) >= 400) {
+      if (isoToCart(pos.x, pos.y).get(1) >= 440) {
         set(pos.x, pos.y);
       }
       if (isoToCart(pos.x, pos.y).get(1) <= 0) {

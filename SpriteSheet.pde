@@ -2,19 +2,16 @@ class SpriteSheet{
   
     PImage sheet;
     ArrayList<PImage> images;
-    int IWidth = 628;
-    int IHeight = 256;
     
 
     
-    SpriteSheet(String path, int w, int h, int nw, int nh)
+    SpriteSheet(String path, int w, int h, int nw, int nh, int rw, int rh)
     {
       sheet = loadImage(path);    
       
       images = new ArrayList<PImage>();
       
-      IWidth = w;
-      IHeight = h;
+
       
       for(int i = 0; i < nw; i++ )
       {
@@ -22,13 +19,18 @@ class SpriteSheet{
         for(int j = 0; j < nh; j++)
         {
           
-          images.add( sheet.get(i*IWidth/nw, j*IHeight/nh, IWidth/nw, IHeight/nh) );
+          images.add( sheet.get(i*w/nw, j*h/nh, w/nw, h/nh) );
+          
           
         }
         
       }
       
-      
+        for(PImage i : images)
+        {          
+            i.resize(rw,rh);
+        }
+ 
     }
   
   

@@ -2,6 +2,8 @@ Player player;
 Map worldMap;
 Cursor cursor;
 
+int stat = 2; // 0: Game, 1: Debug, 2: Level Editor,
+
 
 void setup()
 {
@@ -27,24 +29,28 @@ void update()
   
   if(mousePressed && mouseButton == LEFT)
   {  
-    
-      if (isoToCart(mouseX, mouseY).get(0) >= 400
-       || isoToCart(mouseX, mouseY).get(0) <= 0
-       || isoToCart(mouseX, mouseY).get(1) >= 400
-       || isoToCart(mouseX, mouseY).get(1) <= 0) {   
-      } else {
-        player.set(mouseX, mouseY);
-      }    
+      Tile t = worldMap.getCell(new PVector(mouseX, mouseY));
       
-      for (int i = 0 ; i < 400 ; i += 40) {
-        for (int j = 0 ; j < 400 ; j += 40) {
-          if (isoToCart(mouseX, mouseY).get(0) < i + 40 && i < isoToCart(mouseX, mouseY).get(0)) {
-            if (isoToCart(mouseX, mouseY).get(1) < j + 40 && j < isoToCart(mouseX, mouseY).get(1)) {
-              player.set(cartToIso(i + 20, j + 20).get(0), cartToIso(i + 20, j + 20).get(1));
-            }
-          }
+      
+      if(stat == 2)
+      {
+        if(t != null)
+        {
+          t.images = new ArrayList<PImage>();
+          t.images.add(cursor.currentSprite);      
         }
-      }    
+      }
+        
+      
+      if(stat == 0)
+      {      
+        if(t != null)
+        {
+          player.set(cartToIso(t.pos.x + 20, t.pos.y + 20).get(0),cartToIso(t.pos.x + 20, t.pos.y + 20).get(1));        
+        }        
+      }
+
+
     }
   
 }
@@ -55,7 +61,13 @@ void display()
   
   background(100);
   worldMap.display();
-  player.display();
+  
+  if(stat == 0)
+  {
+    player.display();
+  }
+  
+  
   cursor.display();
   
 }
@@ -83,5 +95,11 @@ ArrayList<Float> isoToCart(float x, float y){
 void mousePressed()
 {
    cursor.mousePressed(); 
+  
+}
+
+void keyPressed()
+{
+   cursor.keyPressed(key); 
   
 }
