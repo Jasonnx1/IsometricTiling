@@ -3,6 +3,18 @@ Map worldMap;
 Cursor cursor;
 PImage bg;
 
+enum DIR {
+   RIGHT,
+   LEFT,
+   UP,
+   DOWN,
+   DOWNRIGHT,
+   DOWNLEFT,
+   UPRIGHT,
+   UPLEFT,
+   STAND
+  }
+
 int state = 0; // 0: Game, 1: Debug, 2: Level Editor,
 
 
@@ -10,12 +22,13 @@ void setup()
 {
   
   size(1080, 720);
+ // fullScreen();
   player = new Player(cartToIso(60,60).get(0), cartToIso(60,60).get(1));
   worldMap = new Map();
   cursor = new Cursor();
   noCursor();
   bg = loadImage("images/bg.png");
-  bg.resize(1080,720);
+  bg.resize(width,height);
 }
 
 

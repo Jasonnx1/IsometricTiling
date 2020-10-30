@@ -1,8 +1,9 @@
 class Player {
   
   
-  float speed = 5;
+  float speed = 1.5;
   
+  DIR direction = DIR.RIGHT;
     
   char keyUp = 'w';
   char keyDown = 's';
@@ -27,7 +28,7 @@ class Player {
   
   Animation animation;
   
-  int direction = 0; // entre 0 et 7     0 = <-  {tourne sens horaire}
+  int directionCalc = 0; // entre 0 et 7     0 = <-  {tourne sens horaire}
   
   PVector dir;
   PVector pos;
@@ -82,35 +83,82 @@ class Player {
   void move()
   {
     
+    directionCalc = 0;
+    
+    boolean tempKeyUp = keyUpIsPressed;
+    boolean tempKeyDown = keyDownIsPressed;
+    boolean tempKeyRight = keyRightIsPressed;
+    boolean tempKeyLeft = keyLeftIsPressed;
+    
+    if(tempKeyUp && tempKeyDown)
+    {
+      tempKeyUp = false;
+      tempKeyDown = false;
+    }
+    
+    if(tempKeyRight && tempKeyLeft)
+    {     
+      tempKeyRight = false;
+      tempKeyLeft = false;      
+    }
+    
 
-    if(keyUpIsPressed)
+    if(tempKeyUp)
     {      
       if(isoToCart(pos.x, pos.y).get(1) >= 0)
       if(isoToCart(pos.x, pos.y).get(0) >= 0)
-      dir.y -= 0.5;     
+      dir.y -= 0.5 * speed;     
+      directionCalc += 1;
     }
     
-    if(keyDownIsPressed)
+    if(tempKeyDown)
     {
       if(isoToCart(pos.x, pos.y).get(1) <= 440)
       if(isoToCart(pos.x, pos.y).get(0) <= 440)
-      dir.y += 0.5; 
+      dir.y += 0.5 * speed;
+      directionCalc += 5;
     }
     
-    if(keyRightIsPressed)
+    if(tempKeyRight)
     {      
       if(isoToCart(pos.x, pos.y).get(0) <= 440)
       if(isoToCart(pos.x, pos.y).get(1) >= 0)
-      dir.x += 1; 
+      dir.x += 1 * speed; 
+      directionCalc += 10;
     }
-    
-    
-    if(keyLeftIsPressed)
+     
+    if(tempKeyLeft)
     {
      if(isoToCart(pos.x, pos.y).get(0) >= 0)
      if(isoToCart(pos.x, pos.y).get(1) <= 440)
-      dir.x -= 1;   
+      dir.x -= 1 * speed;   
+      directionCalc += 20;
     }
+    
+    switch(directionCalc)
+    {
+      case 1: direction = DIR.UP;
+      break;
+      case 5: direction = DIR.DOWN;
+      break;
+      case 10: direction = DIR.RIGHT;
+      break;
+      case 20: direction = DIR.LEFT;
+      break;
+      case 11: direction = DIR.UPRIGHT;
+      break;
+      case 21: direction = DIR.UPLEFT;
+      break;
+      case 15: direction = DIR.DOWNRIGHT;
+      break;
+      case 25: direction = DIR.DOWNLEFT;
+      break;
+      default: direction = DIR.STAND;
+      break;
+    }
+  
+    println(direction);
+   
         
     /*if((this.pos.x != this.dir.x) || (this.pos.y != this.dir.y)) { 
      
