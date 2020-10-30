@@ -12,17 +12,17 @@ class Map {
    SpriteSheet objects; 
   
    int[][] worldMap =  {
-     {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
-     {3, 1, 1, 3, 3, 3, 3, 3, 2, 1, 3},
-     {3, 1, 3, 3, 3, 3, 3, 3, 3, 1, 3},
-     {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
-     {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
-     {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
-     {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
-     {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
-     {3, 2, 3, 3, 3, 3, 3, 3, 3, 1, 3},
-     {3, 1, 2, 3, 3, 3, 3, 3, 1, 1, 3},
-     {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3}
+     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
    };
    
       int[][] overlayMap =  {
@@ -42,7 +42,7 @@ class Map {
   Map()
   {
 
- 
+    loadWorld("levels/main.txt");
     PImage img = new PImage();
     sprites = new SpriteSheet("images/iso_tiles.png", 628, 256, 4, 3, 80, 42 );   
     rowsMap = new ArrayList<TileRow>();
@@ -50,8 +50,6 @@ class Map {
      
     for(int i = 0; i < 11; i++)
     {
-      
-      
       rowsMap.add( new TileRow() );
       
       for(int j = 0; j < 11; j++)
@@ -67,10 +65,27 @@ class Map {
            case 2: img = sprites.images.get(2); //Dirt
            break;
            case 3: img = sprites.images.get(3); //Dirt2
+           break;
+           case 4: img = sprites.images.get(4); //Dirt2
+           break;
+           case 5: img = sprites.images.get(5); //Dirt2
+           break;
+           case 6: img = sprites.images.get(6); //Dirt2
+           break;
+           case 7: img = sprites.images.get(7); //Dirt2
+           break;
+           case 8: img = sprites.images.get(8); //Dirt2
+           break;
+           case 9: img = sprites.images.get(9); //Dirt2
+           break;
+           case 10: img = sprites.images.get(10); //Dirt2
+           break;
+           case 11: img = sprites.images.get(11); //Dirt2
+           break;
 
           }
           
-         rowsMap.get(i).tiles.add(new Tile(new PVector(i*40, j*40), img));
+         rowsMap.get(i).tiles.add(new Tile(new PVector(i*40, j*40), img, worldMap[i][j]));
       }
     }
       
@@ -112,6 +127,88 @@ class Map {
       }*/
    }
     
+    
+    void loadWorld(String path)
+    {
+      
+      String[] lines = loadStrings(path);
+      
+      for(int i = 0; i < lines.length; i++)
+      {
+       
+        
+        for(int j = 0; j < lines[i].length(); j++)
+        {
+          
+          String s = "";
+          s += lines[i].charAt(j);
+          
+          if(s.charAt(0) == '-')
+          {
+            s = "10";
+          }
+          
+          if(s.charAt(0) == '=')
+          {
+            s = "11";
+          }
+          
+          worldMap[i][j] = Integer.parseInt(s);
+          
+        }
+        
+        
+        
+      }
+      
+    }
+    
+    void saveMap(String path)
+    {
+      
+      String[] strings = {
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      };
+      
+      for(int i = 0; i < 11; i ++)
+      {
+        
+         for(int j = 0; j < 11; j++)
+         {
+           if(rowsMap.get(i).tiles.get(j).code < 10 )
+           strings[i] += rowsMap.get(i).tiles.get(j).code; 
+           else
+           {
+            
+             switch(rowsMap.get(i).tiles.get(j).code)
+             {
+               case 10: strings[i] += '-'; 
+               break;
+               case 11: strings[i] += '='; 
+               break;
+     
+             }
+             
+             
+           }
+           
+           
+         }
+      }
+      
+      saveStrings(path, strings);
+      
+    }
     
   
   

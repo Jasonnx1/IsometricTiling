@@ -1,8 +1,9 @@
 Player player;
 Map worldMap;
 Cursor cursor;
+PImage bg;
 
-int stat = 2; // 0: Game, 1: Debug, 2: Level Editor,
+int stat = 0; // 0: Game, 1: Debug, 2: Level Editor,
 
 
 void setup()
@@ -13,6 +14,8 @@ void setup()
   worldMap = new Map();
   cursor = new Cursor();
   noCursor();
+  bg = loadImage("images/bg.png");
+  bg.resize(1080,720);
 }
 
 
@@ -37,7 +40,8 @@ void update()
         if(t != null)
         {
           t.images = new ArrayList<PImage>();
-          t.images.add(cursor.currentSprite);      
+          t.images.add(cursor.currentSprite);  
+          t.code = cursor.currentCode;
         }
       }
         
@@ -59,7 +63,7 @@ void update()
 void display()
 {  
   
-  background(100);
+  background(bg);
   worldMap.display();
   
   if(stat == 0)
@@ -100,6 +104,26 @@ void mousePressed()
 
 void keyPressed()
 {
-   cursor.keyPressed(key); 
+  if(key == '#')
+  {
+    
+    if(stat == 0)
+    {
+      stat = 2;
+    } else
+    { 
+      if(stat == 2)
+      {    
+        worldMap.saveMap("levels/main.txt");
+        stat = 0;      
+      }
+    }
+    
+  }
+  else
+  {
+    cursor.keyPressed(key); 
+  }
+
   
 }
