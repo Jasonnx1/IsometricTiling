@@ -274,7 +274,7 @@ class Map {
     line(isoC.get(0), isoC.get(1), isoD.get(0), isoD.get(1));
     line(isoD.get(0), isoD.get(1), isoA.get(0), isoA.get(1));*/
     
-    if(stat == 2)
+    if(state == 2)
     {
        int i = 0;
       for(PImage img : sprites.images)

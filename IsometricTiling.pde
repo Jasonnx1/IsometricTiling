@@ -3,7 +3,7 @@ Map worldMap;
 Cursor cursor;
 PImage bg;
 
-int stat = 0; // 0: Game, 1: Debug, 2: Level Editor,
+int state = 0; // 0: Game, 1: Debug, 2: Level Editor,
 
 
 void setup()
@@ -27,6 +27,7 @@ void draw()
 
 void update()
 {
+  if(state == 0)
   player.update();
   
   
@@ -35,7 +36,7 @@ void update()
       Tile t = worldMap.getCell(new PVector(mouseX, mouseY));
       
       
-      if(stat == 2)
+      if(state == 2)
       {
         if(t != null)
         {
@@ -46,7 +47,7 @@ void update()
       }
         
       
-      if(stat == 0)
+      if(state == 0)
       {      
         if(t != null)
         {
@@ -66,7 +67,7 @@ void display()
   background(bg);
   worldMap.display();
   
-  if(stat == 0)
+  if(state == 0)
   {
     player.display();
   }
@@ -107,15 +108,15 @@ void keyPressed()
   if(key == '#')
   {
     
-    if(stat == 0)
+    if(state == 0)
     {
-      stat = 2;
+      state = 2;
     } else
     { 
-      if(stat == 2)
+      if(state == 2)
       {    
         worldMap.saveMap("levels/main.txt");
-        stat = 0;      
+        state = 0;      
       }
     }
     
@@ -123,7 +124,14 @@ void keyPressed()
   else
   {
     cursor.keyPressed(key); 
+    player.keyPressed(key);
   }
 
+  
+}
+
+void keyReleased()
+{
+  player.keyReleased(key);
   
 }

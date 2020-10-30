@@ -26,13 +26,17 @@ class Tile {
           image(i, cartToIso(pos.x, pos.y).get(0), cartToIso(pos.x, pos.y).get(1) + 20);
         }
         
-        fill(0,0,0,0);
-        beginShape();
-          vertex(cartToIso(pos.x, pos.y).get(0), cartToIso(pos.x, pos.y).get(1));
-          vertex(cartToIso(pos.x+40, pos.y).get(0), cartToIso(pos.x+40, pos.y).get(1));
-          vertex(cartToIso(pos.x+40, pos.y+40).get(0), cartToIso(pos.x+40, pos.y+40).get(1));
-          vertex(cartToIso(pos.x, pos.y+40).get(0), cartToIso(pos.x, pos.y+40).get(1));
-        endShape(CLOSE);
+        
+        if(state == 2)
+        {
+          fill(0,0,0,0);
+          beginShape();
+            vertex(cartToIso(pos.x, pos.y).get(0), cartToIso(pos.x, pos.y).get(1));
+            vertex(cartToIso(pos.x+40, pos.y).get(0), cartToIso(pos.x+40, pos.y).get(1));
+            vertex(cartToIso(pos.x+40, pos.y+40).get(0), cartToIso(pos.x+40, pos.y+40).get(1));
+            vertex(cartToIso(pos.x, pos.y+40).get(0), cartToIso(pos.x, pos.y+40).get(1));
+          endShape(CLOSE);
+        }
    
     }
   

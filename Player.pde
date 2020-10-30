@@ -4,8 +4,17 @@ class Player {
   float speed = 5;
   
     
-  boolean isMoving = false;
+  char keyUp = 'w';
+  char keyDown = 's';
+  char keyRight = 'd';
+  char keyLeft = 'a';
   
+  boolean keyUpIsPressed = false;
+  boolean keyDownIsPressed = false;
+  boolean keyRightIsPressed = false;
+  boolean keyLeftIsPressed = false;
+  
+    
   SpriteSheet body;
   SpriteSheet head;
   SpriteSheet weapon;
@@ -42,7 +51,7 @@ class Player {
   
   void set(float a, float b)
   {
-    dir = new PVector(a, b);    
+    pos = new PVector(a, b);    
   }
   
   void update()
@@ -51,7 +60,7 @@ class Player {
       
       move();
   
-      if (isoToCart(pos.x, pos.y).get(0) >= 440) {
+     /* if (isoToCart(pos.x, pos.y).get(0) >= 440) {
         set(pos.x, pos.y);
       }
       if (isoToCart(pos.x, pos.y).get(0) <= 0) {
@@ -62,21 +71,48 @@ class Player {
       }
       if (isoToCart(pos.x, pos.y).get(1) <= 0) {
         set(pos.x, pos.y);
-      }
+      }*/
+      
+      pos.add(dir);
+      dir.mult(0);
+      
     
   }
   
   void move()
   {
     
+
+    if(keyUpIsPressed)
+    {      
+      if(isoToCart(pos.x, pos.y).get(1) >= 0)
+      if(isoToCart(pos.x, pos.y).get(0) >= 0)
+      dir.y -= 0.5;     
+    }
     
+    if(keyDownIsPressed)
+    {
+      if(isoToCart(pos.x, pos.y).get(1) <= 440)
+      if(isoToCart(pos.x, pos.y).get(0) <= 440)
+      dir.y += 0.5; 
+    }
+    
+    if(keyRightIsPressed)
+    {      
+      if(isoToCart(pos.x, pos.y).get(0) <= 440)
+      if(isoToCart(pos.x, pos.y).get(1) >= 0)
+      dir.x += 1; 
+    }
+    
+    
+    if(keyLeftIsPressed)
+    {
+     if(isoToCart(pos.x, pos.y).get(0) >= 0)
+     if(isoToCart(pos.x, pos.y).get(1) <= 440)
+      dir.x -= 1;   
+    }
         
-    isMoving = false;
-     
-    
-    if((this.pos.x != this.dir.x) || (this.pos.y != this.dir.y)) {
-      
-       isMoving = true;   
+    /*if((this.pos.x != this.dir.x) || (this.pos.y != this.dir.y)) { 
      
       if (this.pos.x - this.dir.x <= 2 && this.pos.y - this.dir.y <= 2 && -2 <= this.pos.x - this.dir.x && -2 <= this.pos.y - this.dir.y) {
         this.pos.x = this.dir.x;
@@ -95,28 +131,8 @@ class Player {
       this.pos.x = round(this.pos.x + vectorDir.x * this.speed);
       this.pos.y = round(this.pos.y + vectorDir.y * this.speed);  
       }      
-    }
-    
-    if(isMoving)
-    {
-      
-        animation.update();
-        switch(direction)
-        {
-         case 0: currentBody = body.images.get(animation.frame*8 + 24);
-                 currentHead = head.images.get(animation.frame*8 + 24);
-                 currentWeapon = weapon.images.get(animation.frame*8 + 24);
-         break;
-          
-        }
-  
-    } else  {
-          
-      currentBody = body.images.get(0);
-      currentHead = head.images.get(0);
-      currentWeapon = weapon.images.get(0);
-          
-     }
+    }*/
+
     
     
   }
@@ -124,12 +140,66 @@ class Player {
   void display()
   {
     
-    
-  fill(200, 200, 50);
+
   imageMode(CENTER);
   image(currentBody, pos.x, pos.y - 27);
   image(currentHead, pos.x, pos.y - 27);
   image(currentWeapon, pos.x, pos.y - 27);
+  fill(255,0,0,100);
+  ellipse(pos.x, pos.y, 20,20);
+
+    
+  }
+  
+  
+  void keyPressed(char k)
+  {
+    
+      if(k == keyUp)
+      {
+          keyUpIsPressed = true;
+      }
+      
+      if(k == keyDown)
+      {
+          keyDownIsPressed = true;
+      }
+      
+      if(k == keyRight)
+      {
+          keyRightIsPressed = true;
+      }
+      
+      if(k == keyLeft)
+      {
+          keyLeftIsPressed = true;
+      }
+  
+  }
+  
+  void keyReleased(char k)
+  {
+    
+      if(k == keyUp)
+      {
+          keyUpIsPressed = false;
+      }
+      
+      if(k == keyDown)
+      {
+          keyDownIsPressed = false;
+      }
+      
+      if(k == keyRight)
+      {
+          keyRightIsPressed = false;
+      }
+      
+      if(k == keyLeft)
+      {
+          keyLeftIsPressed = false;
+      }
+    
     
   }
   
