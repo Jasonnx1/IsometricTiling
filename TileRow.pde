@@ -4,7 +4,6 @@ class TileRow
   
     TileRow()
     {
-      
      tiles = new ArrayList<Tile>(); 
     }
     
@@ -14,7 +13,7 @@ class TileRow
      for(Tile t : tiles)
      {
        
-        t.display(); 
+        t.displayTile(); 
       
      }
       
@@ -26,7 +25,7 @@ class TileRow
             
        for(Tile t : tiles)
        {
-        if(   cartToIso(t.pos.x, t.pos.y).get(1) + 20 < player.pos.y   )
+        if(cartToIso(t.pos.x, t.pos.y).get(1) < player.pos.y)
          {
              t.displayObject(); 
          }
@@ -40,7 +39,7 @@ class TileRow
    
        for(Tile t : tiles)
        {
-         if(   cartToIso(t.pos.x, t.pos.y).get(1) + 20 >= player.pos.y    )
+         if(cartToIso(t.pos.x, t.pos.y).get(1) >= player.pos.y)
          {
             t.displayObject(); 
          }       

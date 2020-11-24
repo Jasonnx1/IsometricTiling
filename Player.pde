@@ -1,4 +1,4 @@
-class Player {
+class Player implements IDrawable{
   
   
   float speed = 1.5;
@@ -52,6 +52,11 @@ class Player {
   void set(float a, float b)
   {
     pos = new PVector(a, b);    
+  }    
+  
+  public float getY()
+  {
+    return pos.y;   
   }
   
   void update()
@@ -499,5 +504,6 @@ class Player {
     
   }
   
-  
 }
+  
+  

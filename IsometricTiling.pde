@@ -1,7 +1,11 @@
+import java.util.Arrays;
+import java.util.Comparator;
+
 Player player;
 Map worldMap;
 Cursor cursor;
 PImage bg;
+ArrayList<IDrawable> entities;
 
 enum DIR {
    RIGHT,
@@ -21,14 +25,19 @@ int state = 0; // 0: Game, 1: Debug, 2: Level Editor,
 void setup()
 {
   
-  size(1080, 720, P2D);
+  size(1080, 720, P3D);
  // fullScreen();
+  entities = new ArrayList<IDrawable>();
   player = new Player(cartToIso(360, 50).get(0), cartToIso(360, 50).get(1));
   worldMap = new Map();
   cursor = new Cursor();
   noCursor();
   bg = loadImage("images/bg.png");
   bg.resize(width,height);
+  
+  
+  entities.add(player);
+  
  
 }
 
@@ -37,6 +46,37 @@ void draw()
 {
    update();
    display();
+}
+
+
+public void sort(ArrayList<IDrawable> drawables)
+{
+  
+  int i = 0;
+  boolean done = false;
+  while(!done)
+  {
+    done = true;
+    
+    for(i = 0; i < drawables.size(); i++)
+    {
+      if(i != drawables.size() - 1)
+      {
+        if(drawables.get(i).getY() > drawables.get(i+1).getY())
+        {
+          IDrawable temp = drawables.get(i);
+          drawables.set(i, drawables.get(i+1));
+          drawables.set(i+1, temp);
+          
+          done = false; 
+        }
+      
+      }
+      
+    }
+     
+  }
+
 }
 
 void update()
@@ -60,6 +100,7 @@ void update()
               t.images.add(1, cursor.currentSprite);
               t.codeObject = 1;
               t.isCollidable = true;
+              entities.add(t);
           }
           else
           {              
@@ -67,6 +108,7 @@ void update()
               t.images.add(cursor.currentSprite);  
               t.code = cursor.currentCode;
               t.codeObject = 0;
+              entities.remove(t);
               if(t.code == 6)
               {
                t.isCollidable = true; 
@@ -99,15 +141,14 @@ void update()
 void display()
 {  
   background(bg);
+  
   worldMap.displayWorld();
-  worldMap.displayGreater();
-  if(state == 0)
+  
+  sort(entities);
+  for(IDrawable e : entities)
   {
-    
-    player.display();
-    
+   e.display(); 
   }
-  worldMap.displayLower();
   
   cursor.display();
   

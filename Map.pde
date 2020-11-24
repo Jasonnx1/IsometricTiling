@@ -7,6 +7,10 @@ class Map {
    ArrayList<Float> isoC = cartToIso(440, 440);
    ArrayList<Float> isoD = cartToIso(440, 0);
    
+   int baseOffsetX = -40;
+   int baseOffsetY = -80;
+   float heightRowDepthMod = 0.0000001f;
+   
    SpriteSheet sprites;   
    SpriteSheet objects; 
   
@@ -89,6 +93,7 @@ class Map {
           }
           
          rowsMap.get(i).tiles.add(new Tile(new PVector(i*40, j*40), img, worldMap[i][j]));
+         
       }
     }
       
@@ -121,12 +126,18 @@ class Map {
            if(col)
            {
              rowsMap.get(i).tiles.get(j).isCollidable = true;
+             entities.add(rowsMap.get(i).tiles.get(j)); 
            }
            
           
         }
 
       }
+      
+               
+                     
+      
+      
    }
     
     
@@ -292,10 +303,10 @@ class Map {
       PVector pos = new PVector(rowsMap.get(i).tiles.get(j).pos.x, rowsMap.get(i).tiles.get(j).pos.y); 
       
       
-      if(isoToCart(loc.x, loc.y).get(0) >= pos.x + 40
-       || isoToCart(loc.x, loc.y).get(0) <= pos.x
-       || isoToCart(loc.x, loc.y).get(1) >= pos.y + 40
-       || isoToCart(loc.x, loc.y).get(1) <= pos.y)
+      if( isoToCart(loc.x, loc.y + 20).get(0) >= pos.x + 40
+       || isoToCart(loc.x, loc.y + 20).get(0) <= pos.x
+       || isoToCart(loc.x, loc.y + 20).get(1) >= pos.y + 40
+       || isoToCart(loc.x, loc.y + 20).get(1) <= pos.y)
        {
          
 
