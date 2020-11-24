@@ -21,14 +21,15 @@ int state = 0; // 0: Game, 1: Debug, 2: Level Editor,
 void setup()
 {
   
-  size(1080, 720);
+  size(1080, 720, P2D);
  // fullScreen();
-  player = new Player(cartToIso(60,60).get(0), cartToIso(60,60).get(1));
+  player = new Player(cartToIso(360, 50).get(0), cartToIso(360, 50).get(1));
   worldMap = new Map();
   cursor = new Cursor();
   noCursor();
   bg = loadImage("images/bg.png");
   bg.resize(width,height);
+ 
 }
 
 
@@ -53,9 +54,30 @@ void update()
       {
         if(t != null)
         {
-          t.images = new ArrayList<PImage>();
-          t.images.add(cursor.currentSprite);  
-          t.code = cursor.currentCode;
+          
+          if(cursor.currentCode == 12)
+          {  
+              t.images.add(1, cursor.currentSprite);
+              t.codeObject = 1;
+              t.isCollidable = true;
+          }
+          else
+          {              
+              t.images = new ArrayList<PImage>();
+              t.images.add(cursor.currentSprite);  
+              t.code = cursor.currentCode;
+              t.codeObject = 0;
+              if(t.code == 6)
+              {
+               t.isCollidable = true; 
+              }
+              else
+              {
+               
+                t.isCollidable = false;
+                
+              }
+          }
         }
       }
         
@@ -76,15 +98,16 @@ void update()
 
 void display()
 {  
-  
   background(bg);
-  worldMap.display();
-  
+  worldMap.displayWorld();
+  worldMap.displayGreater();
   if(state == 0)
   {
+    
     player.display();
+    
   }
-  
+  worldMap.displayLower();
   
   cursor.display();
   
@@ -112,7 +135,7 @@ ArrayList<Float> isoToCart(float x, float y){
 
 void mousePressed()
 {
-   cursor.mousePressed(); 
+
   
 }
 
@@ -129,6 +152,7 @@ void keyPressed()
       if(state == 2)
       {    
         worldMap.saveMap("levels/main.txt");
+        worldMap.saveOverworld("levels/mainObjects.txt");
         state = 0;      
       }
     }

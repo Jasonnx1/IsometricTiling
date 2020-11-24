@@ -3,6 +3,8 @@ class Animation {
   int nFrame;
   int frame;
   int speed;
+  boolean inc = true;
+ 
   
   float currenttime;
   float previoustime = 0;
@@ -14,7 +16,7 @@ class Animation {
   {
     nFrame = nf;
     frame = 0;
-    speed = 100;
+    speed = 150;
     timer = 0;    
   }
   
@@ -33,7 +35,7 @@ class Animation {
     {
       timer = 0;
       frame++;
-      if(frame >= nFrame)
+      if(frame >= nFrame - 1)
       {
        
         frame = 0;
@@ -42,6 +44,42 @@ class Animation {
       
     }
     
+  }
+  
+  void updateStand()
+  {
+    
+    currenttime = millis();
+    deltatime = currenttime - previoustime;
+    previoustime = currenttime;
+    
+    
+    timer += deltatime;
+    
+    if(timer > speed)
+    {
+      timer = 0;  
+      
+      
+      if(inc) {
+       frame++;
+      } else {
+       frame--;        
+      }
+      
+      
+      if(frame >= nFrame - 1)
+      {
+        inc = !inc;        
+      }
+      
+      if(frame <= 0 && inc == false)
+      {        
+        inc = !inc;        
+      }
+      
+    }
+
   }
   
   

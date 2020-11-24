@@ -1,7 +1,6 @@
 class Map {
   
   ArrayList<TileRow> rowsMap; 
-  ArrayList<TileRow> rowsObjects; 
   
    ArrayList<Float> isoA = cartToIso(0, 0);
    ArrayList<Float> isoB = cartToIso(0, 440);
@@ -25,28 +24,32 @@ class Map {
      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
    };
    
-      int[][] overlayMap =  {
+    int[][] overlayMap =  {
      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-     {0, 0, 0, 0, 0, 1, 0, 2, 0, 0, 0},
+     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
    };
+   
   
   Map()
   {
 
     loadWorld("levels/main.txt");
+    loadOverworld("levels/mainObjects.txt");
+    
+    
     PImage img = new PImage();
     sprites = new SpriteSheet("images/iso_tiles.png", 628, 256, 4, 3, 80, 42 );   
+    objects = new SpriteSheet("images/rocks.png", 384, 384, 3, 2, 53, 80);
     rowsMap = new ArrayList<TileRow>();
-    rowsObjects = new ArrayList<TileRow>();
      
     for(int i = 0; i < 11; i++)
     {
@@ -89,16 +92,15 @@ class Map {
       }
     }
       
-   /* for(int i = 0; i < 11; i++)
+    for(int i = 0; i < 11; i++)
     {
-      rowsObjects.add( new TileRow() );
       
       for(int j = 0; j < 11; j++)
       {
- 
+           boolean col = true;
           switch(overlayMap[i][j])
           {
-           case 0: img = new PImage(); 
+           case 0: img = new PImage(); col = false;
            break;
            case 1: img = objects.images.get(0); 
            break;
@@ -111,20 +113,20 @@ class Map {
            case 5: img = objects.images.get(4); 
            break;
            case 6: img = objects.images.get(5); 
-           break;
-           case 7: img = objects.images.get(6); 
-           break;
-           case 8: img = objects.images.get(7); 
-           break;
-           case 9: img = objects.images.get(8); 
-           break;
-           case 10: img = objects.images.get(9); 
 
-          }    
-         rowsObjects.get(i).tiles.add(new Tile(new PVector(i*40, j*40), img));
+          } 
+          
+           rowsMap.get(i).tiles.get(j).images.add(img);
+           rowsMap.get(i).tiles.get(j).codeObject = overlayMap[i][j];
+           if(col)
+           {
+             rowsMap.get(i).tiles.get(j).isCollidable = true;
+           }
+           
+          
         }
 
-      }*/
+      }
    }
     
     
@@ -160,6 +162,65 @@ class Map {
         
         
       }
+      
+    }
+    
+    void loadOverworld(String path)
+    {
+      String[] lines = loadStrings(path);
+      
+      for(int i = 0; i < lines.length; i++)
+      {   
+        for(int j = 0; j < lines[i].length(); j++)
+        {
+          
+          String s = "";
+          s += lines[i].charAt(j);
+          
+          if(s.charAt(0) == '-')
+          {
+            s = "10";
+          }
+          
+          if(s.charAt(0) == '=')
+          {
+            s = "11";
+          }
+          
+          overlayMap[i][j] = Integer.parseInt(s);
+          
+        }  
+      }      
+    }
+    
+    
+    void saveOverworld(String path)
+    {
+      String[] strings = {
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      };
+      
+      for(int i = 0; i < 11; i ++)
+      {
+        
+         for(int j = 0; j < 11; j++)
+         {
+           strings[i] += rowsMap.get(i).tiles.get(j).codeObject;                     
+         }  
+         
+      }
+
+      saveStrings(path, strings);
       
     }
     
@@ -215,8 +276,6 @@ class Map {
   Tile getCell(PVector loc)
   {
     
-    float isoX = cartToIso(loc.x, loc.y).get(0);
-    float isoY = cartToIso(loc.x, loc.y).get(1);
     
     int i = 0;
     int j = 0;
@@ -233,10 +292,10 @@ class Map {
       PVector pos = new PVector(rowsMap.get(i).tiles.get(j).pos.x, rowsMap.get(i).tiles.get(j).pos.y); 
       
       
-      if(isoToCart(mouseX, mouseY).get(0) >= pos.x + 40
-       || isoToCart(mouseX, mouseY).get(0) <= pos.x
-       || isoToCart(mouseX, mouseY).get(1) >= pos.y + 40
-       || isoToCart(mouseX, mouseY).get(1) <= pos.y)
+      if(isoToCart(loc.x, loc.y).get(0) >= pos.x + 40
+       || isoToCart(loc.x, loc.y).get(0) <= pos.x
+       || isoToCart(loc.x, loc.y).get(1) >= pos.y + 40
+       || isoToCart(loc.x, loc.y).get(1) <= pos.y)
        {
          
 
@@ -266,7 +325,7 @@ class Map {
     
   }
   
-  public void display()
+  public void displayWorld()
   {
 
   /*  line(isoA.get(0), isoA.get(1), isoB.get(0), isoB.get(1));
@@ -313,18 +372,33 @@ class Map {
     {
       
      row.display(); 
-      
+    
+    }
+   
+  }
+  
+  public void displayGreater()
+  {
+    
+    for(TileRow row : rowsMap)
+    {
+       row.displayGreater();     
     }
     
-   /* for(TileRow row : rowsObjects)
+  }
+  
+    public void displayLower()
+  {
+    
+    for(TileRow row : rowsMap)
     {
-      
-     row.display(); 
-      
-    }*/
-   
+       row.displayLower();     
+    }
     
   }
+  
+  
+  
   
 }
  

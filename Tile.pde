@@ -2,6 +2,8 @@ class Tile {
   PVector pos;
   ArrayList<PImage> images;
   int code;
+  int codeObject;
+  boolean isCollidable;
   
     Tile(PVector _pos, PImage _image, int _code)
     {
@@ -9,6 +11,14 @@ class Tile {
         images = new ArrayList<PImage>();
         images.add(_image); 
         code = _code;
+        
+        
+        
+        if(code == 6)
+        isCollidable = true;
+        else
+        isCollidable = false;
+        
 
     }
   
@@ -17,15 +27,10 @@ class Tile {
     {
       
   
-        imageMode(CENTER);
+        imageMode(CENTER); 
+        image(images.get(0), cartToIso(pos.x, pos.y).get(0), cartToIso(pos.x, pos.y).get(1) + 20);
         
-          
-        for(PImage i : images)
-        {
-          if(i != null)
-          image(i, cartToIso(pos.x, pos.y).get(0), cartToIso(pos.x, pos.y).get(1) + 20);
-        }
-        
+       
         
         if(state == 2)
         {
@@ -39,5 +44,25 @@ class Tile {
         }
    
     }
+    
+    void displayObject()
+    {
+      try
+      {
+      if(images.get(1) != null)
+      {
+        imageMode(CENTER); 
+        image(images.get(1), cartToIso(pos.x, pos.y).get(0), cartToIso(pos.x, pos.y).get(1));        
+      }
+      }catch(Exception e){}
+            
+    }
+    
+    
+    
+    
+    
+    
+    
   
 }

@@ -4,6 +4,7 @@ class Player {
   float speed = 1.5;
   
   DIR direction = DIR.RIGHT;
+  DIR last_direction = DIR.RIGHT;
     
   char keyUp = 'w';
   char keyDown = 's';
@@ -24,9 +25,7 @@ class Player {
   PImage currentHead;
   PImage currentWeapon;
   
-  
-  
-  Animation animation;
+  Player_Animation animation;
   
   int directionCalc = 0; // entre 0 et 7     0 = <-  {tourne sens horaire}
   
@@ -36,17 +35,17 @@ class Player {
   Player(float _x, float _y)
   {
     pos = new PVector(_x, _y);
-    dir = new PVector(_x, _y);
+    dir = new PVector(0,0);
     
     body = new SpriteSheet("images/player/clothes.png", 4096,1024, 32, 8, 4096/32, 1024/8);
     head = new SpriteSheet("images/player/male_head1.png", 4096,1024, 32, 8, 4096/32, 1024/8);
-    weapon = new SpriteSheet("images/player/staff.png", 4096,1024, 32, 8, 4096/32, 1024/8);
+    weapon = new SpriteSheet("images/player/shortsword.png", 4096,1024, 32, 8, 4096/32, 1024/8);
     
     currentBody = body.images.get(0);
     currentHead = head.images.get(0);
     currentWeapon = weapon.images.get(0);
     
-    animation = new Animation(4);
+    animation = new Player_Animation();
     
   }
   
@@ -73,7 +72,124 @@ class Player {
       if (isoToCart(pos.x, pos.y).get(1) <= 0) {
         set(pos.x, pos.y);
       }*/
+      animation.update();
+
       
+      if(direction == DIR.STAND)
+      {
+        
+          switch(last_direction)
+          {
+            case UP:            currentBody = body.images.get(2 + (animation.current_animation.frame * 8));
+                                currentHead = head.images.get(2 + (animation.current_animation.frame * 8));
+                                currentWeapon = weapon.images.get(2 + (animation.current_animation.frame * 8));
+            break;
+            
+            
+            case DOWN:            currentBody = body.images.get(6 + (animation.current_animation.frame * 8));
+                                currentHead = head.images.get(6 + (animation.current_animation.frame * 8));
+                                currentWeapon = weapon.images.get(6 + (animation.current_animation.frame * 8));
+            break;
+            
+            
+            case RIGHT:              currentBody = body.images.get(4 + (animation.current_animation.frame * 8));
+                                currentHead = head.images.get(4 + (animation.current_animation.frame * 8));
+                                currentWeapon = weapon.images.get(4 + (animation.current_animation.frame * 8));
+            break;
+            
+            
+            case LEFT:                currentBody = body.images.get(0 + (animation.current_animation.frame * 8));
+                                currentHead = head.images.get(0 + (animation.current_animation.frame * 8));
+                                currentWeapon = weapon.images.get(0 + (animation.current_animation.frame * 8));
+            break;
+            
+            
+            case UPRIGHT:             currentBody = body.images.get(3 + (animation.current_animation.frame * 8));
+                                currentHead = head.images.get(3 + (animation.current_animation.frame * 8));
+                                currentWeapon = weapon.images.get(3 + (animation.current_animation.frame * 8));
+            break;
+            
+            
+            case UPLEFT:              currentBody = body.images.get(1 + (animation.current_animation.frame * 8));
+                                currentHead = head.images.get(1 + (animation.current_animation.frame * 8));
+                                currentWeapon = weapon.images.get(1 + (animation.current_animation.frame * 8));
+            break;
+            
+            
+            case DOWNLEFT:             currentBody = body.images.get(7 + (animation.current_animation.frame * 8));
+                                currentHead = head.images.get(7 + (animation.current_animation.frame * 8));
+                                currentWeapon = weapon.images.get(7 + (animation.current_animation.frame * 8));
+            break;
+            
+            
+            case DOWNRIGHT:              currentBody = body.images.get(5 + (animation.current_animation.frame * 8));
+                                currentHead = head.images.get(5 + (animation.current_animation.frame * 8));
+                                currentWeapon = weapon.images.get(5 + (animation.current_animation.frame * 8));
+            break;    
+            
+            
+          }
+
+      }
+      
+      if(direction != DIR.STAND)
+      {
+        switch(direction)
+          {
+            
+            case UP:            currentBody = body.images.get(34 + (animation.current_animation.frame * 8));
+                                currentHead = head.images.get(34 + (animation.current_animation.frame * 8));
+                                currentWeapon = weapon.images.get(34 + (animation.current_animation.frame * 8));
+            break;
+            
+            
+            case DOWN:          currentBody = body.images.get(38 + (animation.current_animation.frame * 8));
+                                currentHead = head.images.get(38 + (animation.current_animation.frame * 8));
+                                currentWeapon = weapon.images.get(38 + (animation.current_animation.frame * 8));
+            break;
+            
+            
+            case RIGHT:         currentBody = body.images.get(36 + (animation.current_animation.frame * 8));
+                                currentHead = head.images.get(36 + (animation.current_animation.frame * 8));
+                                currentWeapon = weapon.images.get(36 + (animation.current_animation.frame * 8));
+            break;
+            
+            
+            case LEFT:          currentBody = body.images.get(32 + (animation.current_animation.frame * 8));
+                                currentHead = head.images.get(32 + (animation.current_animation.frame * 8));
+                                currentWeapon = weapon.images.get(32 + (animation.current_animation.frame * 8));
+            break;
+            
+            
+            case UPRIGHT:       currentBody = body.images.get(35 + (animation.current_animation.frame * 8));
+                                currentHead = head.images.get(35 + (animation.current_animation.frame * 8));
+                                currentWeapon = weapon.images.get(35 + (animation.current_animation.frame * 8));
+            break;
+            
+            
+            case UPLEFT:        currentBody = body.images.get(33 + (animation.current_animation.frame * 8));
+                                currentHead = head.images.get(33 + (animation.current_animation.frame * 8));
+                                currentWeapon = weapon.images.get(33 + (animation.current_animation.frame * 8));
+            break;
+            
+            
+            case DOWNLEFT:      currentBody = body.images.get(39 + (animation.current_animation.frame * 8));
+                                currentHead = head.images.get(39 + (animation.current_animation.frame * 8));
+                                currentWeapon = weapon.images.get(39 + (animation.current_animation.frame * 8));
+            break;
+            
+            
+            case DOWNRIGHT:     currentBody = body.images.get(37 + (animation.current_animation.frame * 8));
+                                currentHead = head.images.get(37 + (animation.current_animation.frame * 8));
+                                currentWeapon = weapon.images.get(37 + (animation.current_animation.frame * 8));
+            break;        
+          }
+        
+        
+      }
+    
+
+        
       pos.add(dir);
       dir.mult(0);
       
@@ -104,10 +220,50 @@ class Player {
     
 
     if(tempKeyUp)
-    {      
+    {
+      
+      
       if(isoToCart(pos.x, pos.y).get(1) >= 0)
       if(isoToCart(pos.x, pos.y).get(0) >= 0)
-      dir.y -= 0.5 * speed;     
+      {        
+        
+        PVector p = pos.copy();
+        p.y -= 0.5*speed + 10;
+        Tile t = worldMap.getCell(p);
+        
+        
+        if(t != null)
+        {
+          if(t.isCollidable == false)
+          {
+            dir.y -= 0.5 * speed;              
+          }
+
+        }
+        else
+        {
+          
+         
+          p.y -= 0.5*speed;
+          t = worldMap.getCell(p);
+          if(t != null)
+          {
+            if(t.isCollidable == false)
+            {
+              dir.y -= 0.5 * speed;              
+            }
+  
+          }
+          
+        }
+
+        
+            
+      }
+      
+          
+      
+      
       directionCalc += 1;
     }
     
@@ -115,7 +271,37 @@ class Player {
     {
       if(isoToCart(pos.x, pos.y).get(1) <= 440)
       if(isoToCart(pos.x, pos.y).get(0) <= 440)
-      dir.y += 0.5 * speed;
+      {
+        
+        PVector p = pos.copy();
+        p.y += 0.5*speed + 10;
+        Tile t = worldMap.getCell(p);
+        
+        
+        if(t != null)
+        {
+          if(t.isCollidable == false)
+          {
+            dir.y += 0.5 * speed;              
+          }
+
+        }
+        else
+        {
+          p.y += 0.5*speed;
+          t = worldMap.getCell(p);
+          if(t != null)
+          {
+            if(t.isCollidable == false)
+            {
+              dir.y += 0.5 * speed;              
+            }
+  
+          }   
+        }
+      }
+      
+      
       directionCalc += 5;
     }
     
@@ -123,7 +309,37 @@ class Player {
     {      
       if(isoToCart(pos.x, pos.y).get(0) <= 440)
       if(isoToCart(pos.x, pos.y).get(1) >= 0)
-      dir.x += 1 * speed; 
+      {
+        
+        PVector p = pos.copy();
+        p.x += 1*speed + 10;
+        Tile t = worldMap.getCell(p);
+        
+        
+        if(t != null)
+        {
+          if(t.isCollidable == false)
+          {
+            dir.x += 1 * speed;              
+          }
+
+        }
+        else
+        {
+          p.x += 1*speed;
+          t = worldMap.getCell(p);
+          if(t != null)
+          {
+            if(t.isCollidable == false)
+            {
+              dir.x += 1 * speed;              
+            }
+  
+          }  
+        }
+      }
+     
+       
       directionCalc += 10;
     }
      
@@ -131,33 +347,65 @@ class Player {
     {
      if(isoToCart(pos.x, pos.y).get(0) >= 0)
      if(isoToCart(pos.x, pos.y).get(1) <= 440)
-      dir.x -= 1 * speed;   
+     {
+       
+       PVector p = pos.copy();
+       p.x -= 1*speed + 10;
+       Tile t = worldMap.getCell(p);
+        
+        
+        if(t != null)
+        {
+          if(t.isCollidable == false)
+          {
+            dir.x -= 1 * speed;              
+          }
+
+        }
+        else
+        {
+          p.x -= 1*speed;
+          t = worldMap.getCell(p);
+          if(t != null)
+          {
+            if(t.isCollidable == false)
+            {
+              dir.x -= 1 * speed;              
+            }
+  
+          }  
+        } 
+     }
+   
       directionCalc += 20;
     }
     
+    if(direction != DIR.STAND)
+    last_direction = direction;
+    
     switch(directionCalc)
     {
-      case 1: direction = DIR.UP;
+      case 1: direction = DIR.UP; animation.current_animation = animation.run;
       break;
-      case 5: direction = DIR.DOWN;
+      case 5: direction = DIR.DOWN; animation.current_animation = animation.run;
       break;
-      case 10: direction = DIR.RIGHT;
+      case 10: direction = DIR.RIGHT; animation.current_animation = animation.run;
       break;
-      case 20: direction = DIR.LEFT;
+      case 20: direction = DIR.LEFT; animation.current_animation = animation.run;
       break;
-      case 11: direction = DIR.UPRIGHT;
+      case 11: direction = DIR.UPRIGHT; animation.current_animation = animation.run;
       break;
-      case 21: direction = DIR.UPLEFT;
+      case 21: direction = DIR.UPLEFT; animation.current_animation = animation.run;
       break;
-      case 15: direction = DIR.DOWNRIGHT;
+      case 15: direction = DIR.DOWNRIGHT; animation.current_animation = animation.run;
       break;
-      case 25: direction = DIR.DOWNLEFT;
+      case 25: direction = DIR.DOWNLEFT; animation.current_animation = animation.run;
       break;
-      default: direction = DIR.STAND;
+      default: direction = DIR.STAND; animation.current_animation = animation.stand;
       break;
     }
   
-    println(direction);
+   // println(direction);
    
         
     /*if((this.pos.x != this.dir.x) || (this.pos.y != this.dir.y)) { 
@@ -193,8 +441,8 @@ class Player {
   image(currentBody, pos.x, pos.y - 27);
   image(currentHead, pos.x, pos.y - 27);
   image(currentWeapon, pos.x, pos.y - 27);
-  fill(255,0,0,100);
-  ellipse(pos.x, pos.y, 20,20);
+  //fill(255,0,0,100);
+  //ellipse(pos.x, pos.y, 20,20);
 
     
   }

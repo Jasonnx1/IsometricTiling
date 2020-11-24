@@ -26,15 +26,8 @@ class Cursor
    image(currentCursor, mouseX, mouseY);
    
  }
-  
- 
-  void mousePressed()
-  {
-    if(mouseButton == RIGHT)currentCursor = sheet.images.get(12);
-    if(mouseButton == LEFT)currentCursor = sheet.images.get(0);
-    currentCursor.resize((int)(69/1.1), (int)(89/1.1));
+   
 
-  }
   
   void keyPressed(char k)
   {
@@ -77,14 +70,29 @@ class Cursor
            case '=': currentSprite = worldMap.sprites.images.get(11);
                      currentCode = 11;
            break;          
+           case 'q': currentSprite = worldMap.objects.images.get(0);
+                     currentCode = 12;
+           break;
     }
     
-    currentSprite.resize(80,42);
+    
+    
+    if(currentCode == 12)
+    {
+     
+      currentSprite.resize(53,80);
+      
+    }
+    else
+    {      
+      currentSprite.resize(80,42);
+    }
     
     if(keyCode == ENTER)
     {
       
      worldMap.saveMap("levels/main.txt"); 
+     worldMap.saveOverworld("levels/mainObjects.txt");
       
     }
     
