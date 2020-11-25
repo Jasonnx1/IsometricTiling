@@ -388,25 +388,7 @@ class Map {
    
   }
   
-  public void displayGreater()
-  {
-    
-    for(TileRow row : rowsMap)
-    {
-       row.displayGreater();     
-    }
-    
-  }
-  
-    public void displayLower()
-  {
-    
-    for(TileRow row : rowsMap)
-    {
-       row.displayLower();     
-    }
-    
-  }
+
   
   
   

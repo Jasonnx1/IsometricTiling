@@ -19,33 +19,6 @@ class TileRow
       
     }
     
-    void displayGreater()
-    {
-      
-            
-       for(Tile t : tiles)
-       {
-        if(cartToIso(t.pos.x, t.pos.y).get(1) < player.pos.y)
-         {
-             t.displayObject(); 
-         }
-        
-       }
-      
-    }
-    
-    void displayLower()
-    {
-   
-       for(Tile t : tiles)
-       {
-         if(cartToIso(t.pos.x, t.pos.y).get(1) >= player.pos.y)
-         {
-            t.displayObject(); 
-         }       
-       }
-      
-    }
   
   
 }

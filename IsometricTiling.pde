@@ -2,6 +2,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 Player player;
+Player player2;
 Map worldMap;
 Cursor cursor;
 PImage bg;
@@ -27,7 +28,9 @@ void setup()
   
   size(1080, 720, P3D);
  // fullScreen();
+  
   entities = new ArrayList<IDrawable>();
+  player2 = new Player(cartToIso(200, 400).get(0), cartToIso(200, 400).get(1));
   player = new Player(cartToIso(360, 50).get(0), cartToIso(360, 50).get(1));
   worldMap = new Map();
   cursor = new Cursor();
@@ -35,8 +38,18 @@ void setup()
   bg = loadImage("images/bg.png");
   bg.resize(width,height);
   
+  player2.setCommand('i','j','k','l');
+  
   
   entities.add(player);
+  entities.add(player2);
+  
+  
+  
+  
+  player2.body = new SpriteSheet("images/player/steel_armor.png", 4096,1024, 32, 8, 4096/32, 1024/8);
+  player2.head = new SpriteSheet("images/player/male_head1.png", 4096,1024, 32, 8, 4096/32, 1024/8);
+  player2.weapon = new SpriteSheet("images/player/staff.png", 4096,1024, 32, 8, 4096/32, 1024/8);
   
  
 }
@@ -82,8 +95,10 @@ public void sort(ArrayList<IDrawable> drawables)
 void update()
 {
   if(state == 0)
-  player.update();
-  
+  {
+    player.update();
+    player2.update();
+  }
   
   if(mousePressed && mouseButton == LEFT)
   {  
@@ -128,7 +143,8 @@ void update()
       {      
         if(t != null)
         {
-          player.set(cartToIso(t.pos.x + 20, t.pos.y + 20).get(0),cartToIso(t.pos.x + 20, t.pos.y + 20).get(1));        
+          player.set(cartToIso(t.pos.x + 20, t.pos.y + 20).get(0),cartToIso(t.pos.x + 20, t.pos.y + 20).get(1));    
+          player2.set(cartToIso(t.pos.x + 20, t.pos.y + 20).get(0),cartToIso(t.pos.x + 20, t.pos.y + 20).get(1));    
         }        
       }
 
@@ -203,6 +219,7 @@ void keyPressed()
   {
     cursor.keyPressed(key); 
     player.keyPressed(key);
+    player2.keyPressed(key);
   }
 
   
@@ -211,5 +228,5 @@ void keyPressed()
 void keyReleased()
 {
   player.keyReleased(key);
-  
+  player2.keyReleased(key);
 }
