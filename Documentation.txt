@@ -1,0 +1,29 @@
+Isometric Tiling - StackOverflow
+https://stackoverflow.com/questions/39482141/drawing-2d-isometric-image-grid
+
+Isometric Tiling Code example - OpenProcessing
+https://www.openprocessing.org/sketch/949890
+
+Getting a part of a sprite - Processing Official Doc
+https://processing.org/reference/PImage_get_.html
+
+Sprite sheet Age of empire cursor - Spriters
+https://www.spriters-resource.com/fullview/51447/
+
+Isometric tiles spriteSheet - Google Images
+https://www.google.com/imgres?imgurl=https%3A%2F%2Fmdn.mozillademos.org%2Ffiles%2F11777%2Fiso_tiles.png&imgrefurl=https%3A%2F%2Fdeveloper.mozilla.org%2Fen-US%2Fdocs%2FGames%2FTechniques%2FTilemaps&tbnid=JTaqODbFbf7VNM&vet=12ahUKEwj7uJGOyNjsAhUMLN8KHSUuAisQMygWegUIARDPAQ..i&docid=O4-Hi60ngTCREM&w=628&h=256&q=isometric%20tile%20sheet&client=opera-gx&ved=2ahUKEwj7uJGOyNjsAhUMLN8KHSUuAisQMygWegUIARDPAQ
+
+Read Strings from text file - Processing Forum
+https://forum.processing.org/one/topic/how-do-i-read-a-txt-file.html
+
+Read String from text file - Processing Official Doc
+https://processing.org/reference/loadStrings_.html
+
+Write Strings to text file - Processing Official Doc
+https://processing.org/reference/saveStrings_.html
+
+Read Characters from String - Processing Official Doc
+https://processing.org/reference/String_charAt_.html#:~:text=Returns%20the%20character%20at%20the,next%20at%20index%201%2C%20etc.
+
+Sprite Sheets for Characters - Open Game Art
+https://opengameart.org/content/isometric-hero-and-heroine

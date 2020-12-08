@@ -1,12 +1,15 @@
 import java.util.Arrays;
 import java.util.Comparator;
 
-Player player;
-Player player2;
+
+ArrayList<Player> players;
+
+
 Map worldMap;
 Cursor cursor;
 PImage bg;
 ArrayList<IDrawable> entities;
+Menu menu;
 
 enum DIR {
    RIGHT,
@@ -20,45 +23,67 @@ enum DIR {
    STAND
   }
 
-int state = 0; // 0: Game, 1: Debug, 2: Level Editor,
+int state = 3; // 0: Game, 1: Debug, 2: Level Editor, 3: Menu
+int nPlayers = 1;
 
+void init()
+{
+ 
+  nPlayers = menu.nPlayers;
+  players = new ArrayList<Player>();
+  
+  entities = new ArrayList<IDrawable>();
+  
+  for(int i =-0; i < nPlayers; i++)
+  {
+    players.add(new Player(cartToIso(200, 400).get(0), cartToIso(200, 400).get(1)) );    
+    if(i == 1)
+    {
+      players.get(1).setCommand('i','j','k','l');
+      players.get(i).body = new SpriteSheet("images/player/steel_armor.png", 4096,1024, 32, 8, 4096/32, 1024/8);
+      players.get(i).head = new SpriteSheet("images/player/male_head1.png", 4096,1024, 32, 8, 4096/32, 1024/8);
+      players.get(i).weapon = new SpriteSheet("images/player/staff.png", 4096,1024, 32, 8, 4096/32, 1024/8);
+    }
+    entities.add(players.get(i));
+  }
+  
+
+  worldMap = new Map();
+  cursor = new Cursor();
+
+  bg = loadImage("images/bg.png");
+  bg.resize(width,height);
+  
+  
+}
 
 void setup()
 {
   
-  size(1080, 720, P3D);
- // fullScreen();
-  
-  entities = new ArrayList<IDrawable>();
-  player2 = new Player(cartToIso(200, 400).get(0), cartToIso(200, 400).get(1));
-  player = new Player(cartToIso(360, 50).get(0), cartToIso(360, 50).get(1));
-  worldMap = new Map();
-  cursor = new Cursor();
+  size(1080, 610, P2D);
+  surface.setResizable(false);
   noCursor();
-  bg = loadImage("images/bg.png");
-  bg.resize(width,height);
-  
-  player2.setCommand('i','j','k','l');
+  menu = new Menu();
   
   
-  entities.add(player);
-  entities.add(player2);
-  
-  
-  
-  
-  player2.body = new SpriteSheet("images/player/steel_armor.png", 4096,1024, 32, 8, 4096/32, 1024/8);
-  player2.head = new SpriteSheet("images/player/male_head1.png", 4096,1024, 32, 8, 4096/32, 1024/8);
-  player2.weapon = new SpriteSheet("images/player/staff.png", 4096,1024, 32, 8, 4096/32, 1024/8);
-  
- 
 }
 
 
 void draw()
 {
-   update();
-   display();
+  
+  if(state == 3)
+  {
+     menu.display(); 
+   
+  }
+  else
+  {
+       update();
+       display();    
+  }
+  
+
 }
 
 
@@ -96,8 +121,11 @@ void update()
 {
   if(state == 0)
   {
-    player.update();
-    player2.update();
+    for(Player p : players)
+    {
+     p.update(); 
+    }
+
   }
   
   if(mousePressed && mouseButton == LEFT)
@@ -143,8 +171,12 @@ void update()
       {      
         if(t != null)
         {
-          player.set(cartToIso(t.pos.x + 20, t.pos.y + 20).get(0),cartToIso(t.pos.x + 20, t.pos.y + 20).get(1));    
-          player2.set(cartToIso(t.pos.x + 20, t.pos.y + 20).get(0),cartToIso(t.pos.x + 20, t.pos.y + 20).get(1));    
+          
+              for(Player p : players)
+              {
+               p.set(cartToIso(t.pos.x + 20, t.pos.y + 20).get(0),cartToIso(t.pos.x + 20, t.pos.y + 20).get(1));   
+              }
+              
         }        
       }
 
@@ -156,6 +188,7 @@ void update()
 
 void display()
 {  
+  bg.resize(width,height);
   background(bg);
   
   worldMap.displayWorld();
@@ -166,8 +199,8 @@ void display()
    e.display(); 
   }
   
-  cursor.display();
   
+  cursor.display();
 }
 
 ArrayList<Float> cartToIso(float x, float y){
@@ -198,35 +231,68 @@ void mousePressed()
 
 void keyPressed()
 {
-  if(key == '#')
+  
+  if(state == 3)
   {
-    
-    if(state == 0)
+    if(keyCode == ENTER)
     {
-      state = 2;
-    } else
-    { 
-      if(state == 2)
-      {    
-        worldMap.saveMap("levels/main.txt");
-        worldMap.saveOverworld("levels/mainObjects.txt");
-        state = 0;      
-      }
+      state = 0;
+      init();
     }
-    
+    else
+    {
+     menu.keyPressed(); 
+    }
   }
   else
   {
-    cursor.keyPressed(key); 
-    player.keyPressed(key);
-    player2.keyPressed(key);
+    if(key == 'r')
+    {
+       state = 3;       
+    }
+    if(key == '#')
+    {      
+      if(state == 0)
+      {
+        state = 2;
+      } else
+      { 
+        if(state == 2)
+        {    
+          worldMap.saveMap("levels/main.txt");
+          worldMap.saveOverworld("levels/mainObjects.txt");
+          state = 0;      
+        }
+      }
+      
+    }
+    else
+    {
+      cursor.keyPressed(key); 
+      
+      for(Player p : players)
+      {
+        p.keyPressed(key); 
+      }
+      
+    }
+    
   }
+  
+  
 
   
 }
 
 void keyReleased()
 {
-  player.keyReleased(key);
-  player2.keyReleased(key);
+  if(state != 3)
+  {
+  
+      for(Player p : players)
+      {
+        p.keyReleased(key); 
+      }
+      
+  }
 }
